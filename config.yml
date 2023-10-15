@@ -78,7 +78,7 @@ params:
   # home-info mode
   homeInfoParams:
     Title: "Hi there \U0001F44B"
-    Content: Welcome to O11y Cloud.com
+    Content: Welcome to Hacking Robotics, Learning robotics though code.
 
   socialIcons:
     - name: twitter
