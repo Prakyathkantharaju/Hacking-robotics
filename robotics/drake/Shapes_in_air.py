@@ -35,8 +35,30 @@ from pydrake.all import (
 import sys
 sys.path.append('manipulation/')
 
-from manipulation.scenarios import AddMultibodyPlantSceneGraph
-from manipulation.station import MakeHardwareStation, load_scenario
+from manipulation.scenarios import AddMultibodyPlantSceneGraph #type: ignore
+from manipulation.station import MakeHardwareStation, load_scenario #type: ignore
+
+
+# local imports
+from create_trajectory import generate_rotation_and_translations
+
+
+def circle_curve(initial_tranformation: RigidTransform) -> (dict, dict):
+    circle_points = np.array([[np.sin(theta), np.cos(theta), 0] for theta in np.arange(0, 2*np.pi, 0.1)])
+
+    # get the quaternions and translations
+    qt_pairs = generate_rotation_and_translations(circle_points)
+    times = {}
+    X = {}
+    p = {}
+    for i, qt_pair in enumerate(qt_pairs):
+        quaternion, translation = qt_pair
+        X[i] = initial_tranformation @ RigidTransform(RotationMatrix(quaternion), p=translation)
+        p[i] = translation
+        times[i] = i
+    return X, p, times
+
+    
 
 def line_curve(initial_tranformation: RigidTransform) -> (dict, dict):
     Z_mid_1 = -0.2
@@ -72,13 +94,19 @@ def MakeGripperCommandTrajectory():
     return traj_wsg_command
 
 # trajectories
-def make_curves(Initial_start_point_Transformation, type: str = "line"):
+def make_curves(Initial_start_point_Transformation, type: str = "circle"):
     if type == "line":
         # tiems in the increasing order or 5s
         X, p = line_curve(Initial_start_point_Transformation)
         times = [0, 5, 10, 15]
         X_list = [X["initial"], X["mid_1"], X["mid_2"], X["end"]]
-    print(X_list)
+    if type == "circle":
+        X, p, times = circle_curve(Initial_start_point_Transformation)
+        X_list = [X[i] for i in range(len(X))]
+        times = [times[i] for i in range(len(times))]
+
+    
+    
 
     # Generate the piecewise PiecewisePose Make linear
     traj_pos_G = PiecewisePose.MakeLinear(times, X_list)
