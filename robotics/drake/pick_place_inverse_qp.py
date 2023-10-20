@@ -32,13 +32,16 @@ from pydrake.all import (
     Solve,
 )
 
+import sys
+sys.path.append('manipulation/')
+
 from manipulation.scenarios import AddMultibodyPlantSceneGraph
 from manipulation.station import MakeHardwareStation, load_scenario
 
 
 
 
-def make_trajectory(X_WG: dict, X_WO: dict, plot:bool =False):
+def make_trajectory(X_WG: dict, X_WO: dict, plot:bool =True):
     """
     Takes a partial specification with X_G["initial"] and X_O["initial"] and
     X_0["goal"], and returns a X_G and times with all of the pick and place
@@ -114,9 +117,11 @@ def make_trajectory(X_WG: dict, X_WO: dict, plot:bool =False):
     ]:
         sample_times.append(times[name])
         X_WG_traj.append(X_WG[name])
+        print(name, X_WG[name].translation())
 
     # Do a piecewise linear interpolation.
     traj_position_G = PiecewisePose.MakeLinear(sample_times, X_WG_traj)
+    print(traj_position_G)
 
 
     # Get the trajectories in velocity though differentiation.
@@ -130,6 +135,7 @@ def make_trajectory(X_WG: dict, X_WO: dict, plot:bool =False):
         plt.plot(plot_time, plot_V_WG.T)
 
         ax.legend()
+        plt.show()
 
     return X_WG, times, traj_velocity_G
 
@@ -302,7 +308,7 @@ def main(plot: bool = False):
 
     # get the plant
     plant = station.GetSubsystemByName("plant")
-    print(type(plant))
+    # print(type(plant))
     # set the pose for the body
     plant.SetDefaultFreeBodyPose(plant.GetBodyByName("base_link"), 
                                  RigidTransform(RotationMatrix.MakeZRotation(np.pi/2), [0,-0.6,0]))
@@ -317,6 +323,7 @@ def main(plot: bool = False):
            "goal": RigidTransform(RotationMatrix.MakeZRotation(np.pi), [0.5, 0, 0.0])} # x with respect to the world frame
     X_O = {"initial": plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("base_link")), # x with respect to the body frame
            "goal": RigidTransform(RotationMatrix.MakeZRotation(np.pi), [0.5, 0, 0.0])} # x with respect to the world frame
+    print(X_G["goal"], X_G["initial"])
 
     Position_X, times, vel_trajectory   = make_trajectory(X_G, X_O, plot=True)
 
@@ -362,7 +369,7 @@ def main(plot: bool = False):
 
     # visualize the diagram
     print("Diagram built")
-    pydot.graph_from_dot_data( diagram.GetGraphvizString())[0].write_svg("station.svg")
+    pydot.graph_from_dot_data( diagram.GetGraphvizString())[0].write_svg("station_pick_place.svg")
 
     # simulate the diagram
     simulator = Simulator(diagram)
