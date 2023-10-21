@@ -1,5 +1,5 @@
 ---
-title: "Drake setup and introduction"
+title: "Drake setup and introduction to IK using pseudo inverse and quadratic programming"
 date: 2023-10-15T18:49:58-05:00
 draft: False
 tags: ["Drake", "Manipulation", "Robotics", "Introduction"]
