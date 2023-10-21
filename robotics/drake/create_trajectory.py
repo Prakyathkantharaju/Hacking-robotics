@@ -1,6 +1,20 @@
 import numpy as np
 from scipy.spatial.transform import Rotation as R
 
+def generate_translations(points: np.ndarray, start_point=np.array([0, 0, 0])):
+    translations = []
+    previous_point = start_point
+    for point in points:
+        # Calculate translation vector from the previous point to the current point
+        translation_vector = point - previous_point
+        # Store the translation vector
+        translations.append(translation_vector)
+        # Update the previous point for the next iteration
+        previous_point = point
+
+    return translations
+
+
 def generate_rotation_and_translations(points: np.ndarray, start_point=np.array([0, 0, 0])):
     rotation_and_translations = []
     previous_point = start_point
@@ -17,8 +31,8 @@ def generate_rotation_and_translations(points: np.ndarray, start_point=np.array(
             # or default to a unit vector along the z-axis if this is the first iteration
             direction_vector = np.array([0, 0, 1])
 
-        # Assume the up vector to be [0, 1, 0]
-        up_vector = np.array([0, 1, 0])
+        # Assume the up vector to be [0, 0, 1]
+        up_vector = np.array([0, 0, 1])
 
         # Cross product to find the right vector
         right_vector = np.cross(up_vector, direction_vector)

@@ -40,22 +40,21 @@ from manipulation.station import MakeHardwareStation, load_scenario #type: ignor
 
 
 # local imports
-from create_trajectory import generate_rotation_and_translations
+from create_trajectory import generate_translations
 
 
 def circle_curve(initial_tranformation: RigidTransform) -> (dict, dict):
-    circle_points = np.array([[np.sin(theta), np.cos(theta), 0] for theta in np.arange(0, 2*np.pi, 0.1)])
+    circle_points = np.array([[np.sin(theta) * 0.2, np.cos(theta) * 0.2, 0] for theta in np.arange(0, np.pi, 0.1)])
 
     # get the quaternions and translations
-    qt_pairs = generate_rotation_and_translations(circle_points)
+    translations = generate_translations(circle_points)
     times = {}
     X = {}
     p = {}
-    for i, qt_pair in enumerate(qt_pairs):
-        quaternion, translation = qt_pair
-        X[i] = initial_tranformation @ RigidTransform(RotationMatrix(quaternion), p=translation)
+    for i, translation in enumerate(translations):
+        X[i] = initial_tranformation @ RigidTransform(RotationMatrix(), p=translation)
         p[i] = translation
-        times[i] = i
+        times[i] = i *0.5
     return X, p, times
 
     
@@ -185,7 +184,7 @@ def main():
     """
     directives:
     - add_directives:
-        file: package://manipulation/clutter.dmd.yaml
+        file: package://manipulation/iiwa_and_wsg.dmd.yaml
     model_drivers:
         iiwa: !IiwaDriver
             hand_model_name: wsg
