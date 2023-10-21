@@ -325,7 +325,7 @@ def main(plot: bool = False):
            "goal": RigidTransform(RotationMatrix.MakeZRotation(np.pi), [0.5, 0, 0.0])} # x with respect to the world frame
     print(X_G["goal"], X_G["initial"])
 
-    Position_X, times, vel_trajectory   = make_trajectory(X_G, X_O, plot=True)
+    Position_X, times, vel_trajectory = make_trajectory(X_G, X_O, plot=True)
 
     # gripper position
     traj_wsg_command = MakeGripperCommandTrajectory(times)

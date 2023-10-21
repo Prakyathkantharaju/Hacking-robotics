@@ -44,7 +44,7 @@ from create_trajectory import generate_translations
 
 
 def circle_curve(initial_tranformation: RigidTransform) -> (dict, dict):
-    circle_points = np.array([[np.sin(theta) * 0.2, np.cos(theta) * 0.2, 0] for theta in np.arange(0, np.pi, 0.1)])
+    circle_points = np.array([[np.sin(theta) * 0.3, np.cos(theta) * 0.3, 0] for theta in np.arange(0, np.pi, 0.1)])
 
     # get the quaternions and translations
     translations = generate_translations(circle_points)
