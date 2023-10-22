@@ -553,6 +553,8 @@ class QPController(LeafSystem):
 
 
 ## Results
-{{ <youtube rtCUpqlqp20> }}
+{{< youtube id="rtCUpqlqp20" >}}
+
+I tried embedding video, but hugo is not letting me, so here is the youtube video: https://youtu.be/rtCUpqlqp20
 
 
