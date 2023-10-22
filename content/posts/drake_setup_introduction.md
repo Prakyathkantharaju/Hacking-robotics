@@ -553,6 +553,8 @@ class QPController(LeafSystem):
 
 
 ## Results
-{{ <video src="pick_place_ik.mp4", controls="yes"> }}
+{{< youtube id="rtCUpqlqp20" >}}
+
+I tried embedding video, but hugo is not letting me, so here is the youtube video: https://youtu.be/rtCUpqlqp20
 
 
