@@ -552,3 +552,7 @@ class QPController(LeafSystem):
 ```
 
 
+## Results
+{{ <video src="pick_place_ik.mp4", controls="yes"> }}
+
+
