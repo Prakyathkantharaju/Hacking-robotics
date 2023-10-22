@@ -4,3 +4,6 @@
 [submodule "themes/PaperMod"]
 	path = themes/PaperMod
 	url = https://github.com/adityatelange/hugo-PaperMod
+[submodule "robotics/drake/manipulation"]
+	path = robotics/drake/manipulation
+	url = git@github.com:Prakyathkantharaju/manipulation.git

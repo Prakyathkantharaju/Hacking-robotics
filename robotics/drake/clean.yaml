@@ -1,0 +1,4 @@
+
+directives:
+- add_directives:
+    file: package://manipulation/iiwa_and_wsg.dmd.yaml
